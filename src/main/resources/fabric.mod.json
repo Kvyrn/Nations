@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "nations",
+  "version": "${version}",
+  "name": "Nations",
+  "description": "",
+  "authors": [
+    "Treesoid"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/nations/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "io.github.treesoid.nations.client.NationsClient"
+    ],
+    "main": [
+      "io.github.treesoid.nations.Nations"
+    ],
+    "cardinal-components": [
+      "io.github.treesoid.nations.components.NationsComponentRegistry"
+    ]
+  },
+  "custom": {
+    "cardinal-components": [
+      "nations:abilities"
+    ]
+  },
+  "mixins": [
+    "nations.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.7",
+    "fabric": "*",
+    "minecraft": "1.17.1"
+  }
+}

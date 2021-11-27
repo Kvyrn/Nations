@@ -1,0 +1,17 @@
+{
+    "nations.commands.ability.invalid": "Invalid ability: %s",
+    "nations.commands.ability.grant.partial_success": "Ability granted to %s players. Failed for: %s",
+    "nations.commands.ability.grant.fail.single": "Failed to grant ability to %s",
+    "nations.commands.ability.grant.fail.multi": "Abiliy granted to %s players",
+    "nations.commands.ability.grant.success.single": "Ability granted to %s",
+    "nations.commands.ability.grant.success.multi": "Ability granted to %s players",
+    "nations.commands.ability.revoke.partial_success": "Ability revoked from %s players. Failed for: %s",
+    "nations.commands.ability.revoke.fail.single": "Ability revoked from %s",
+    "nations.commands.ability.revoke.fail.multi": "Abiliy revoked from %s players",
+    "nations.commands.ability.revoke.success.single": "Ability revoked from %s",
+    "nations.commands.ability.revoke.success.multi": "Ability revoked from %s players",
+    "nations.commands.ability.list": "Abilities of %s: %s",
+
+    "key.nations.activate_ability": "Activate ability",
+    "category.nations": "Nations"
+}
