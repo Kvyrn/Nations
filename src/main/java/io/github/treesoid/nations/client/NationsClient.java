@@ -16,6 +16,10 @@ public class NationsClient implements ClientModInitializer {
     public void onInitializeClient() {
         HudRenderCallback.EVENT.register(NationsClient::onHudRender);
         NationsKeybinds.register();
+        registerClientNetworkRecivers();
+    }
+
+    private static void registerClientNetworkRecivers() {
     }
 
     private static void onHudRender(MatrixStack matrixStack, float tickDelta) {

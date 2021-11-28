@@ -53,7 +53,9 @@ public class PlayerAbilityList {
             list.add(ability.serialize());
         }
         compound.put("abilities", list);
-        compound.putString("selctedAbility", selectedAbility.ability.identifier.toString());
+        if (hasAbilitySelected()) {
+            compound.putString("selctedAbility", selectedAbility.ability.identifier.toString());
+        }
         return compound;
     }
 
@@ -65,6 +67,7 @@ public class PlayerAbilityList {
         return selectedAbility != null;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public boolean selectAbility(Ability ability) {
         if (ability == null) {
             this.selectedAbility = null;
@@ -76,6 +79,24 @@ public class PlayerAbilityList {
         return true;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
+    public boolean selectAbility(Identifier ability) {
+        if (ability == null) {
+            this.selectedAbility = null;
+            return true;
+        }
+        Optional<PlayerAbility> optionalPlayerAbility = abilities.stream().filter(ability1 -> ability1.ability.identifier.equals(ability)).findFirst();
+        if (optionalPlayerAbility.isEmpty()) return false;
+        this.selectedAbility = optionalPlayerAbility.get();
+        return true;
+    }
+
+    public void useSelectedAbility() {
+        if (hasAbilitySelected()) {
+            selectedAbility.use();
+        }
+    }
+
     public static PlayerAbilityList deserialize(NbtCompound compound, PlayerEntity player) {
         PlayerAbilityList object = new PlayerAbilityList(player);
         try {
@@ -83,9 +104,11 @@ public class PlayerAbilityList {
             for (NbtElement element : list) {
                 object.abilities.add(PlayerAbility.deserialize((NbtCompound) element, player));
             }
-            Identifier selectedAbilityIdentifier = new Identifier(compound.getString("selectedAbility"));
-            if (Nations.ABILITY_REGISTRY.containsKey(selectedAbilityIdentifier)) {
-                object.selectAbility(Nations.ABILITY_REGISTRY.get(selectedAbilityIdentifier));
+            if (compound.contains("selectedAbility")) {
+                Identifier selectedAbilityIdentifier = new Identifier(compound.getString("selectedAbility"));
+                if (Nations.ABILITY_REGISTRY.containsKey(selectedAbilityIdentifier)) {
+                    object.selectAbility(selectedAbilityIdentifier);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

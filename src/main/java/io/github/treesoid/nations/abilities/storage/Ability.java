@@ -22,6 +22,7 @@ public abstract class Ability {
 
     public void onUse(PlayerAbility ability) {
         ability.setCooldown(getMaxCooldown());
+        onTrigger(ability);
     }
 
     public abstract int getMaxCooldown();
@@ -41,5 +42,5 @@ public abstract class Ability {
         return identifier.equals(ability.ability.identifier);
     }
 
-    public abstract void onTrigger(PlayerAbility ability);
+    protected abstract void onTrigger(PlayerAbility ability);
 }

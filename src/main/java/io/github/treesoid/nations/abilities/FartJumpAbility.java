@@ -4,10 +4,12 @@ import io.github.treesoid.nations.Nations;
 import io.github.treesoid.nations.abilities.player.PlayerAbility;
 import io.github.treesoid.nations.abilities.storage.Ability;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 
 public class FartJumpAbility extends Ability {
     public static final Identifier IDENTIFIER = new Identifier(Nations.modid, "fart_jump");
+    public static final FartJumpAbility INSTANCE = new FartJumpAbility();
 
     public FartJumpAbility() {
         super(IDENTIFIER);
@@ -30,5 +32,6 @@ public class FartJumpAbility extends Ability {
 
     @Override
     public void onTrigger(PlayerAbility ability) {
+        ability.holder.sendMessage(new LiteralText("pffffffff"), false);
     }
 }

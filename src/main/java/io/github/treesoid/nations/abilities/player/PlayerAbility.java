@@ -32,6 +32,10 @@ public class PlayerAbility {
         if (cooldown > 0) cooldown--;
     }
 
+    public void use() {
+        this.ability.onUse(this);
+    }
+
     public NbtCompound serialize() {
         NbtCompound compound = new NbtCompound();
         compound.putString("id", ability.identifier.toString());
