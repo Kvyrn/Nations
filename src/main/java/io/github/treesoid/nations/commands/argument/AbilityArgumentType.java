@@ -8,7 +8,7 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.github.treesoid.nations.Nations;
-import io.github.treesoid.nations.abilities.storage.Ability;
+import io.github.treesoid.nations.abilities.util.Ability;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 

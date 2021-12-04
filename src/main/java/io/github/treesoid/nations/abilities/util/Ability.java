@@ -1,6 +1,5 @@
-package io.github.treesoid.nations.abilities.storage;
+package io.github.treesoid.nations.abilities.util;
 
-import io.github.treesoid.nations.abilities.player.PlayerAbility;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 public abstract class Ability {
-    public final List<UUID> holders = new LinkedList<>();
+    public List<UUID> holders = new LinkedList<>();
     public final Identifier identifier;
 
     public Ability(Identifier identifier) {
@@ -22,7 +21,9 @@ public abstract class Ability {
 
     public void onUse(PlayerAbility ability) {
         ability.setCooldown(getMaxCooldown());
-        onTrigger(ability);
+        if (canUse(ability)) {
+            onTrigger(ability);
+        }
     }
 
     public abstract int getMaxCooldown();

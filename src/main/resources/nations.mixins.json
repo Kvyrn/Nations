@@ -4,7 +4,8 @@
   "package": "io.github.treesoid.nations.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "PlayerEntityMixin"
+    "PlayerEntityMixin",
+    "PlayerManagerMixin"
   ],
   "client": [
   ],

@@ -1,27 +1,30 @@
-package io.github.treesoid.nations.abilities.player;
+package io.github.treesoid.nations.abilities.util;
 
 import io.github.treesoid.nations.Nations;
-import io.github.treesoid.nations.abilities.storage.Ability;
+import io.github.treesoid.nations.helper.ServerPlayerHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 
 public class PlayerAbility {
+    @Nullable
     public final PlayerEntity holder;
-    protected int cooldown = 0;
     public final Ability ability;
+    protected int cooldown = 0;
+    protected boolean favourite = false;
 
-    public PlayerAbility(PlayerEntity holder, Ability ability) {
+    public PlayerAbility(@Nullable PlayerEntity holder, Ability ability) {
         this.holder = holder;
         this.ability = ability;
     }
 
-    public void setCooldown(int cooldown) {
-        this.cooldown = cooldown;
-    }
-
     public int getCooldown() {
         return cooldown;
+    }
+
+    public void setCooldown(int cooldown) {
+        this.cooldown = cooldown;
     }
 
     public boolean hasCooldown() {
@@ -33,20 +36,24 @@ public class PlayerAbility {
     }
 
     public void use() {
-        this.ability.onUse(this);
+        if (holder != null) {
+            this.ability.onUse(this);
+        }
+    }
+
+    public boolean isFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
     }
 
     public NbtCompound serialize() {
         NbtCompound compound = new NbtCompound();
         compound.putString("id", ability.identifier.toString());
         compound.putInt("cooldown", cooldown);
+        compound.putBoolean("favourite", favourite);
         return compound;
-    }
-
-    public static PlayerAbility deserialize(NbtCompound compound, PlayerEntity player) {
-        Identifier abilityId = new Identifier(compound.getString("id"));
-        PlayerAbility object = new PlayerAbility(player, Nations.ABILITY_REGISTRY.get(abilityId));
-        object.setCooldown(compound.getInt("cooldown"));
-        return object;
     }
 }

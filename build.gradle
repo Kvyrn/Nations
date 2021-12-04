@@ -22,11 +22,7 @@ repositories {
         name = "CottonMC"
         url = "https://server.bbkr.space/artifactory/libs-release"
     }
-    //Cardinal components
-    maven {
-        name = 'Ladysnake Mods'
-        url = 'https://ladysnake.jfrog.io/artifactory/mods'
-    }
+    mavenCentral()
 }
 
 dependencies {
@@ -39,14 +35,16 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     // LibGUI https://github.com/CottonMC/LibGui
-    modImplementation include("io.github.cottonmc:LibGui:${project.libgui}")
+    modImplementation "io.github.cottonmc:LibGui:${project.libgui}"
+    include "io.github.cottonmc:LibGui:${project.libgui}"
 
-    // Cardinal Components API https://github.com/OnyxStudios/Cardinal-Components-API
-    modImplementation "io.github.onyxstudios:Cardinal-Components-API:${project.cardinalcomponents}"
-    include "io.github.onyxstudios:Cardinal-Components-API:${project.cardinalcomponents}"
+    // MySQL
+    implementation "mysql:mysql-connector-java:${project.mysqlconnector}"
+    include "mysql:mysql-connector-java:${project.mysqlconnector}"
 
-    // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
-    // You may need to force-disable transitiveness on them.
+    // Night-config https://github.com/TheElectronWill/Night-Config
+    implementation "com.electronwill.night-config:toml:${project.nightconfig}"
+    include "com.electronwill.night-config:toml:${project.nightconfig}"
 }
 
 processResources {

@@ -13,5 +13,7 @@
     "nations.commands.ability.list": "Abilities of %s: %s",
 
     "key.nations.activate_ability": "Activate ability",
-    "category.nations": "Nations"
+    "category.nations": "Nations",
+
+    "gui.nations.abilitySelector.title": "Ability selector"
 }

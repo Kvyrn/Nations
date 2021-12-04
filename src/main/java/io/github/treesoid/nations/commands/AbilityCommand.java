@@ -3,10 +3,10 @@ package io.github.treesoid.nations.commands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import io.github.treesoid.nations.abilities.player.PlayerAbilityList;
-import io.github.treesoid.nations.abilities.storage.Ability;
+import io.github.treesoid.nations.Nations;
+import io.github.treesoid.nations.abilities.util.Ability;
+import io.github.treesoid.nations.abilities.util.PlayerAbilityList;
 import io.github.treesoid.nations.commands.argument.AbilityArgumentType;
-import io.github.treesoid.nations.components.NationsCKeys;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -25,17 +25,17 @@ public class AbilityCommand {
         dispatcher.register(
                 literal("ability")
                         .then(argument("target", EntityArgumentType.players())
-                                      .then(argument("ability", AbilityArgumentType.ability())
-                                                    .then(literal("grant").executes(AbilityCommand::grantAbility))
-                                                    .then(literal("revoke").executes(AbilityCommand::revokeAbility))))
+                                .then(argument("ability", AbilityArgumentType.ability())
+                                        .then(literal("grant").executes(AbilityCommand::grantAbility))
+                                        .then(literal("revoke").executes(AbilityCommand::revokeAbility))))
                         .then(argument("target", EntityArgumentType.player())
-                                      .then(literal("list").executes(AbilityCommand::listAbilities)))
+                                .then(literal("list").executes(AbilityCommand::listAbilities)))
         );
     }
 
     private static int listAbilities(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         ServerPlayerEntity player = EntityArgumentType.getPlayer(context, "target");
-        PlayerAbilityList abilities = NationsCKeys.ABILITIES.get(player).get();
+        PlayerAbilityList abilities = Nations.DATABASE_HANDLER.getOrCreatePlayerAbilityList(player.getUuid(), context.getSource().getServer());
 
         StringBuilder builder = new StringBuilder();
         Iterator<Ability> iterator = abilities.abilities.stream().map(ability -> ability.ability).iterator();
@@ -56,11 +56,12 @@ public class AbilityCommand {
         LinkedList<Text> fails = new LinkedList<>();
 
         for (ServerPlayerEntity target : targets) {
-            boolean succesfull = NationsCKeys.ABILITIES.get(target).get().addAbility(ability);
+            PlayerAbilityList abilityList = Nations.DATABASE_HANDLER.getOrCreatePlayerAbilityList(target.getUuid(), context.getSource().getServer());
+            boolean succesfull = abilityList.addAbility(ability);
             if (!succesfull) {
                 fails.add(target.getDisplayName());
             }
-            NationsCKeys.ABILITIES.sync(target);
+            abilityList.sync();
         }
 
         genOutput(context.getSource(), "grant", targets, fails);
@@ -73,11 +74,12 @@ public class AbilityCommand {
         LinkedList<Text> fails = new LinkedList<>();
 
         for (ServerPlayerEntity target : targets) {
-            boolean succesfull = NationsCKeys.ABILITIES.get(target).get().removeAbility(ability);
+            PlayerAbilityList abilityList = Nations.DATABASE_HANDLER.getOrCreatePlayerAbilityList(target.getUuid(), context.getSource().getServer());
+            boolean succesfull = abilityList.removeAbility(ability);
             if (!succesfull) {
                 fails.add(target.getDisplayName());
             }
-            NationsCKeys.ABILITIES.sync(target);
+            abilityList.sync();
         }
 
         genOutput(context.getSource(), "revoke", targets, fails);

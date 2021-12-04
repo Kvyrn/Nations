@@ -1,8 +1,8 @@
 package io.github.treesoid.nations.abilities;
 
 import io.github.treesoid.nations.Nations;
-import io.github.treesoid.nations.abilities.player.PlayerAbility;
-import io.github.treesoid.nations.abilities.storage.Ability;
+import io.github.treesoid.nations.abilities.util.PlayerAbility;
+import io.github.treesoid.nations.abilities.util.Ability;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;

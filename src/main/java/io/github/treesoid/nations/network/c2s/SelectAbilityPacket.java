@@ -1,9 +1,8 @@
 package io.github.treesoid.nations.network.c2s;
 
 import io.github.treesoid.nations.Nations;
-import io.github.treesoid.nations.abilities.player.PlayerAbilityList;
-import io.github.treesoid.nations.abilities.storage.Ability;
-import io.github.treesoid.nations.components.NationsCKeys;
+import io.github.treesoid.nations.abilities.util.Ability;
+import io.github.treesoid.nations.abilities.util.PlayerAbilityList;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -17,7 +16,7 @@ public class SelectAbilityPacket {
         ServerPlayNetworking.registerGlobalReceiver(IDENTIFIER, (server, player, handler, buf, responseSender) -> {
             Identifier abilityIdentifier = buf.readIdentifier();
             server.execute(() -> {
-                PlayerAbilityList abilityList = NationsCKeys.ABILITIES.get(player).get();
+                PlayerAbilityList abilityList = Nations.DATABASE_HANDLER.getOrCreatePlayerAbilityList(player.getUuid(), server);
                 abilityList.selectAbility(abilityIdentifier);
             });
         });
