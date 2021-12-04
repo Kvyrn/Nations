@@ -31,7 +31,6 @@ public class PlayerAbilityList {
         if (!ServerPlayerHelper.playerOnline(player, server)) return false;
         PlayerEntity playerEntity = ServerPlayerHelper.getPlayer(player, server);
         if (!hasAbility(ability) && ability.canObtain(playerEntity)) {
-            ability.holders.add(player);
             PlayerAbility newAbility = new PlayerAbility(playerEntity, ability);
             abilities.add(newAbility);
             Nations.DATABASE_HANDLER.addPlayerAbility(newAbility, player);
@@ -45,7 +44,6 @@ public class PlayerAbilityList {
         return abilities.removeIf(ability1 -> {
             if (ability.matches(ability1)) {
                 Nations.DATABASE_HANDLER.removePlayerAbility(ability1.ability, player);
-                ability.holders.remove(player);
                 return true;
             }
             return false;

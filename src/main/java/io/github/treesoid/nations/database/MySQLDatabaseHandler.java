@@ -8,6 +8,7 @@ import io.github.treesoid.nations.helper.ServerPlayerHelper;
 import io.github.treesoid.nations.storage.OfflinePlayerData;
 import io.github.treesoid.nations.storage.OnlinePlayerData;
 import io.github.treesoid.nations.storage.PlayerData;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
 
@@ -23,16 +24,17 @@ import java.util.UUID;
 import static io.github.treesoid.nations.Nations.LOGGER;
 
 public class MySQLDatabaseHandler implements IDatabaseHandler {
-    private static final String listAbilitiesQuery = "SELECT * FROM PLayerAbilities WHERE PlayerUuid = ?;";
+    private static final String listAbilitiesQuery = "SELECT * FROM PlayerAbilities WHERE PlayerUuid = ?;";
     private static final String removePlayerAbilities = "DELETE FROM PlayerAbilities WHERE UUID = ?;";
     private static final String removePlayer = "DELETE FROM Players WHERE UUID = ?;";
     private static final String listHoldersOfAbility = "SELECT PlayerUuid FROM PlayerAbilities WHERE AbilityId = ?;";
     private static final String getSelectedAbility = "SELECT SelectedAbility FROM Players WHERE Uuid = ?;";
     private static final String updatePlayerData = "UPDATE Players SET Name = ?, Playtime = ?, Nation = ?, ResourcePoints = ?, SelectedAbility = ? WHERE Uuid = ?;";
-    private static final String updateAbility = "UPDATE PlayerAbilities SET Favourite = ?, Cooldown = ? WHERE Uuid = ? AND AbilityId = ?;";
+    private static final String updateAbility = "UPDATE PlayerAbilities SET Favourite = ?, Cooldown = ? WHERE PlayerUuid = ? AND AbilityId = ?;";
     private static final String insertAbility = "INSERT INTO PlayerAbilities VALUES (?, ?, ?, ?);";
     private static final String removePlayerAbility = "DELETE FROM PlayerAbilities WHERE Uuid = ? AND AbilityId = ?;";
     private static final String getPlayerData = "SELECT * FROM Players WHERE Uuid = ?;";
+    private static final String createPlayerData = "INSERT INTO Players VALUES (?, ?, ?, ?, ?, ?);";
 
     private final Connection databaseConnection;
     private final HashMap<UUID, PlayerAbilityList> abilityListCache = new HashMap<>();
@@ -48,10 +50,10 @@ public class MySQLDatabaseHandler implements IDatabaseHandler {
         Nations table
         | Name                  | Data type     |
         |-----------------------|---------------|
-        | Name *(key*)          | TINYTEXT      |
+        | Name *(key*)          | VARCHAR(255)  |
          */
         String createNationsTable = "CREATE TABLE IF NOT EXISTS Nations (" +
-                "Name TINYTEXT," +
+                "Name VARCHAR(255)," +
                 "PRIMARY KEY (Name)" +
                 ");";
         try {
@@ -68,7 +70,7 @@ public class MySQLDatabaseHandler implements IDatabaseHandler {
         | Uuid *(key)*          | CHAR(36)      |
         | Name                  | TINYTEXT      |
         | Playtime              | BIGINT        |
-        | Nation **(fkey)**     | TINYTEXT      |
+        | Nation **(fkey)**     | VARCHAR(255)  |
         | ResourcePoints        | INT           |
         | SelectedAbility       | TINYTEXT      |
          */
@@ -76,7 +78,7 @@ public class MySQLDatabaseHandler implements IDatabaseHandler {
                 "Uuid CHAR(36) NOT NULL," +
                 "Name TINYTEXT," +
                 "Playtime BIGINT," +
-                "Nation TINYTEXT," +
+                "Nation VARCHAR(255)," +
                 "ResourcePoints INT," +
                 "SelectedAbility TINYTEXT," +
                 "PRIMARY KEY (Uuid)," +
@@ -110,6 +112,13 @@ public class MySQLDatabaseHandler implements IDatabaseHandler {
             statement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.warn("Failed to create PlayerAbilities table in database!", e);
+        }
+
+        try {
+            PreparedStatement statement = databaseConnection.prepareStatement("INSERT IGNORE INTO Nations VALUES ('nations:default');");
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.warn("Failed to create default nation!", e);
         }
     }
 
@@ -200,6 +209,31 @@ public class MySQLDatabaseHandler implements IDatabaseHandler {
                 playerData.setNation(nation);
                 playerData.setResourcePoints(resourcePoints);
                 playerData.setSelectedAbility(selectedAbility);
+                if (cache) playerDataCache.put(uuid, playerData);
+                return playerData;
+            } else {
+                boolean playerOnline = ServerPlayerHelper.playerOnline(uuid, server);
+                String name = playerOnline ? ServerPlayerHelper.getPlayer(uuid, server).getGameProfile().getName() : "";
+
+                PreparedStatement create = databaseConnection.prepareStatement(createPlayerData);
+                create.setString(1, uuid.toString());
+                create.setString(2, name);
+                create.setLong(3, 0);
+                create.setString(4, "nations:default");
+                create.setInt(5, 0);
+                create.setString(6, "");
+                create.executeUpdate();
+
+                PlayerData playerData;
+                if (ServerPlayerHelper.playerOnline(uuid, server)) {
+                    playerData = new OnlinePlayerData(ServerPlayerHelper.getPlayer(uuid, server), name);
+                } else {
+                    playerData = new OfflinePlayerData(uuid, name);
+                }
+                playerData.setPlaytime(0);
+                playerData.setNation(new Identifier("nations", "default"));
+                playerData.setResourcePoints(0);
+                playerData.setSelectedAbility(null);
                 if (cache) playerDataCache.put(uuid, playerData);
                 return playerData;
             }

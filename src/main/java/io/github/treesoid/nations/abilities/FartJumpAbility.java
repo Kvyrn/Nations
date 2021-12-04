@@ -17,7 +17,7 @@ public class FartJumpAbility extends Ability {
 
     @Override
     public boolean canObtain(PlayerEntity player) {
-        return holders.size() < 10;
+        return Nations.DATABASE_HANDLER.listHoldersOfAbility(this).size() < 10;
     }
 
     @Override
@@ -33,5 +33,6 @@ public class FartJumpAbility extends Ability {
     @Override
     public void onTrigger(PlayerAbility ability) {
         ability.holder.sendMessage(new LiteralText("pffffffff"), false);
+        ability.holder.addVelocity(0, 10, 0);
     }
 }

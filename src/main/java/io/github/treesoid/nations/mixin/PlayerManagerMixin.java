@@ -11,9 +11,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerManager.class)
 public class PlayerManagerMixin {
+
     @Inject(method = "onPlayerConnect", at = @At("TAIL"))
     private void onPlayerConnect(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
         Nations.DATABASE_HANDLER.removeFromCache(player.getUuid());
+        Nations.DATABASE_HANDLER.getOrCreatePlayerData(player.getUuid(), player.server, true, true);
     }
 
     @Inject(method = "remove", at = @At("HEAD"))

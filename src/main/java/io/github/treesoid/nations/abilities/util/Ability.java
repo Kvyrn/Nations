@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.UUID;
 
 public abstract class Ability {
-    public List<UUID> holders = new LinkedList<>();
     public final Identifier identifier;
 
     public Ability(Identifier identifier) {

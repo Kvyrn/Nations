@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.text.LiteralText;
 import org.lwjgl.glfw.GLFW;
 
 public class NationsKeybinds {
@@ -34,16 +35,17 @@ public class NationsKeybinds {
 
     private static void tick(MinecraftClient client) {
         handleActivateAbility();
-        handleSelectAbility();
+        handleSelectAbility(client);
     }
 
-    private static void handleSelectAbility() {
+    private static void handleSelectAbility(MinecraftClient client) {
         boolean wasPressed = false;
         while (SELECT_ABILITY.wasPressed()) {
             wasPressed = true;
         }
         if (wasPressed) {
             SelectAbilityPacket.send(FartJumpAbility.INSTANCE);
+            client.player.sendMessage(new LiteralText("ability selected"), false);
         }
     }
 
