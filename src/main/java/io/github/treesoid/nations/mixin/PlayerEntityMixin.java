@@ -1,6 +1,7 @@
 package io.github.treesoid.nations.mixin;
 
 import io.github.treesoid.nations.Nations;
+import io.github.treesoid.nations.server.NationsServer;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,12 +23,12 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void onTick(CallbackInfo ci) {
-        Nations.DATABASE_HANDLER.getOrCreatePlayerAbilityList(this.getUuid(), getServer()).tick();
+        NationsServer.DATABASE_HANDLER.getOrCreatePlayerAbilityList(this.getUuid(), getServer()).tick();
     }
 
     @Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
     private void writeData(NbtCompound nbt, CallbackInfo ci) {
-        Nations.DATABASE_HANDLER.getOrCreatePlayerAbilityList(this.getUuid(), this.getServer()).updateAllAbilities();
+        NationsServer.DATABASE_HANDLER.getOrCreatePlayerAbilityList(this.getUuid(), this.getServer()).updateAllAbilities();
     }
 
     private PlayerEntity asPlayer() {

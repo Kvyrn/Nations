@@ -18,13 +18,8 @@
     "main": [
       "io.github.treesoid.nations.Nations"
     ],
-    "cardinal-components": [
-      "io.github.treesoid.nations.components.NationsComponentRegistry"
-    ]
-  },
-  "custom": {
-    "cardinal-components": [
-      "nations:abilities"
+    "server": [
+      "io.github.treesoid.nations.server.NationsServer"
     ]
   },
   "mixins": [
@@ -33,6 +28,7 @@
   "depends": {
     "fabricloader": ">=0.11.7",
     "fabric": "*",
-    "minecraft": "1.17.1"
+    "minecraft": "1.18.x",
+    "java": ">=17"
   }
 }

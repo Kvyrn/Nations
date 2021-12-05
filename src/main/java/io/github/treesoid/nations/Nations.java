@@ -28,20 +28,9 @@ public class Nations implements ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger();
 
     public static final HashMap<Identifier, Ability> ABILITY_REGISTRY = new HashMap<>();
-    public static IDatabaseHandler DATABASE_HANDLER;
 
     @Override
     public void onInitialize() {
-        NationsConfig.load();
-        NationsConfig.save();
-
-        try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://" + NationsConfig.CONFIG.database.url, NationsConfig.CONFIG.database.username, NationsConfig.CONFIG.database.password);
-            DATABASE_HANDLER = new MySQLDatabaseHandler(connection);
-        } catch (SQLException e) {
-            FabricGuiEntry.displayCriticalError(e, true);
-        }
-
         //noinspection CodeBlock2Expr
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
             AbilityCommand.register(dispatcher);
@@ -50,12 +39,5 @@ public class Nations implements ModInitializer {
         ABILITY_REGISTRY.put(FartJumpAbility.IDENTIFIER, FartJumpAbility.INSTANCE);
 
         ArgumentTypes.register(modid + ":ability", AbilityArgumentType.class, new ConstantArgumentSerializer<>(AbilityArgumentType::ability));
-
-        registerNetworkRecivers();
-    }
-
-    public void registerNetworkRecivers() {
-        ActivateAbilityPacket.registerReciver();
-        SelectAbilityPacket.registerReciver();
     }
 }

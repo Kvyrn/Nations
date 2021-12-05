@@ -3,6 +3,7 @@ package io.github.treesoid.nations.abilities;
 import io.github.treesoid.nations.Nations;
 import io.github.treesoid.nations.abilities.util.PlayerAbility;
 import io.github.treesoid.nations.abilities.util.Ability;
+import io.github.treesoid.nations.server.NationsServer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
@@ -17,7 +18,7 @@ public class FartJumpAbility extends Ability {
 
     @Override
     public boolean canObtain(PlayerEntity player) {
-        return Nations.DATABASE_HANDLER.listHoldersOfAbility(this).size() < 10;
+        return NationsServer.DATABASE_HANDLER.listHoldersOfAbility(this).size() < 10;
     }
 
     @Override

@@ -2,6 +2,7 @@ package io.github.treesoid.nations.abilities.util;
 
 import io.github.treesoid.nations.Nations;
 import io.github.treesoid.nations.helper.ServerPlayerHelper;
+import io.github.treesoid.nations.server.NationsServer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -33,7 +34,7 @@ public class PlayerAbilityList {
         if (!hasAbility(ability) && ability.canObtain(playerEntity)) {
             PlayerAbility newAbility = new PlayerAbility(playerEntity, ability);
             abilities.add(newAbility);
-            Nations.DATABASE_HANDLER.addPlayerAbility(newAbility, player);
+            NationsServer.DATABASE_HANDLER.addPlayerAbility(newAbility, player);
             return true;
         } else {
             return false;
@@ -43,7 +44,7 @@ public class PlayerAbilityList {
     public boolean removeAbility(Ability ability) {
         return abilities.removeIf(ability1 -> {
             if (ability.matches(ability1)) {
-                Nations.DATABASE_HANDLER.removePlayerAbility(ability1.ability, player);
+                NationsServer.DATABASE_HANDLER.removePlayerAbility(ability1.ability, player);
                 return true;
             }
             return false;
@@ -75,7 +76,7 @@ public class PlayerAbilityList {
                 .filter(ability1 -> ability1.isFavourite() != favourite)
                 .forEach(ability1 -> {
                     ability1.setFavourite(favourite);
-                    Nations.DATABASE_HANDLER.updatePlayerAbility(ability1, player);
+                    NationsServer.DATABASE_HANDLER.updatePlayerAbility(ability1, player);
                     output.set(true);
                 });
         this.updateFavourites();
@@ -88,15 +89,15 @@ public class PlayerAbilityList {
         if (ability == null) {
             this.selectedAbility = null;
             if (prevSelected != null) {
-                Nations.DATABASE_HANDLER.updatePlayerAbility(prevSelected, player);
+                NationsServer.DATABASE_HANDLER.updatePlayerAbility(prevSelected, player);
             }
             return true;
         }
         Optional<PlayerAbility> optionalPlayerAbility = abilities.stream().filter(ability::matches).findFirst();
         if (optionalPlayerAbility.isEmpty()) return false;
         this.selectedAbility = optionalPlayerAbility.get();
-        Nations.DATABASE_HANDLER.updatePlayerAbility(prevSelected, player);
-        Nations.DATABASE_HANDLER.updatePlayerAbility(selectedAbility, player);
+        NationsServer.DATABASE_HANDLER.updatePlayerAbility(prevSelected, player);
+        NationsServer.DATABASE_HANDLER.updatePlayerAbility(selectedAbility, player);
         return true;
     }
 
@@ -124,7 +125,7 @@ public class PlayerAbilityList {
 
     public void updateAllAbilities() {
         for (PlayerAbility ability : abilities) {
-            Nations.DATABASE_HANDLER.updatePlayerAbility(ability, player);
+            NationsServer.DATABASE_HANDLER.updatePlayerAbility(ability, player);
         }
     }
 

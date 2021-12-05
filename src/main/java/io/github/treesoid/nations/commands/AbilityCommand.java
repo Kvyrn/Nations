@@ -7,6 +7,7 @@ import io.github.treesoid.nations.Nations;
 import io.github.treesoid.nations.abilities.util.Ability;
 import io.github.treesoid.nations.abilities.util.PlayerAbilityList;
 import io.github.treesoid.nations.commands.argument.AbilityArgumentType;
+import io.github.treesoid.nations.server.NationsServer;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -35,7 +36,7 @@ public class AbilityCommand {
 
     private static int listAbilities(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         ServerPlayerEntity player = EntityArgumentType.getPlayer(context, "target");
-        PlayerAbilityList abilities = Nations.DATABASE_HANDLER.getOrCreatePlayerAbilityList(player.getUuid(), context.getSource().getServer());
+        PlayerAbilityList abilities = NationsServer.DATABASE_HANDLER.getOrCreatePlayerAbilityList(player.getUuid(), context.getSource().getServer());
 
         StringBuilder builder = new StringBuilder();
         Iterator<Ability> iterator = abilities.abilities.stream().map(ability -> ability.ability).iterator();
@@ -56,7 +57,7 @@ public class AbilityCommand {
         LinkedList<Text> fails = new LinkedList<>();
 
         for (ServerPlayerEntity target : targets) {
-            PlayerAbilityList abilityList = Nations.DATABASE_HANDLER.getOrCreatePlayerAbilityList(target.getUuid(), context.getSource().getServer());
+            PlayerAbilityList abilityList = NationsServer.DATABASE_HANDLER.getOrCreatePlayerAbilityList(target.getUuid(), context.getSource().getServer());
             boolean succesfull = abilityList.addAbility(ability);
             if (!succesfull) {
                 fails.add(target.getDisplayName());
@@ -74,7 +75,7 @@ public class AbilityCommand {
         LinkedList<Text> fails = new LinkedList<>();
 
         for (ServerPlayerEntity target : targets) {
-            PlayerAbilityList abilityList = Nations.DATABASE_HANDLER.getOrCreatePlayerAbilityList(target.getUuid(), context.getSource().getServer());
+            PlayerAbilityList abilityList = NationsServer.DATABASE_HANDLER.getOrCreatePlayerAbilityList(target.getUuid(), context.getSource().getServer());
             boolean succesfull = abilityList.removeAbility(ability);
             if (!succesfull) {
                 fails.add(target.getDisplayName());

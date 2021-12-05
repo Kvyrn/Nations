@@ -1,6 +1,7 @@
 package io.github.treesoid.nations.mixin;
 
 import io.github.treesoid.nations.Nations;
+import io.github.treesoid.nations.server.NationsServer;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -14,12 +15,12 @@ public class PlayerManagerMixin {
 
     @Inject(method = "onPlayerConnect", at = @At("TAIL"))
     private void onPlayerConnect(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
-        Nations.DATABASE_HANDLER.removeFromCache(player.getUuid());
-        Nations.DATABASE_HANDLER.getOrCreatePlayerData(player.getUuid(), player.server, true, true);
+        NationsServer.DATABASE_HANDLER.removeFromCache(player.getUuid());
+        NationsServer.DATABASE_HANDLER.getOrCreatePlayerData(player.getUuid(), player.server, true, true);
     }
 
     @Inject(method = "remove", at = @At("HEAD"))
     private void onPlayerLeave(ServerPlayerEntity player, CallbackInfo ci) {
-        Nations.DATABASE_HANDLER.removeFromCache(player.getUuid());
+        NationsServer.DATABASE_HANDLER.removeFromCache(player.getUuid());
     }
 }
