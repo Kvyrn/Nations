@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public class NationsConfig {
-    public static NationsConfigObject CONFIG;
+    public static NationsConfigObject SERVER_CONFIG;
     public static final ObjectConverter OBJECT_CONVERTER = new ObjectConverter();
     public static final TomlWriter writer = TomlFormat.instance().createWriter();
     static {
@@ -40,12 +40,12 @@ public class NationsConfig {
         }
         FileConfig configObject = createConfig();
         configObject.load();
-        CONFIG = OBJECT_CONVERTER.toObject(configObject, NationsConfigObject::new);
+        SERVER_CONFIG = OBJECT_CONVERTER.toObject(configObject, NationsConfigObject::new);
         configObject.close();
     }
 
     public static void save() {
-        FileConfig configObject = OBJECT_CONVERTER.toConfig(CONFIG, NationsConfig::createConfig);
+        FileConfig configObject = OBJECT_CONVERTER.toConfig(SERVER_CONFIG, NationsConfig::createConfig);
         writer.write(configObject, configObject.getFile(), WritingMode.REPLACE);
         configObject.close();
     }

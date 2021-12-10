@@ -49,6 +49,8 @@ public interface IDatabaseHandler {
 
     Ability getSelectedAbility(UUID player);
 
+    void setSelectedAbility(UUID player, Ability ability);
+
     void removeAbilityListFromCache(UUID uuid);
 
     void removePlayerDataFromCache(UUID uuid);

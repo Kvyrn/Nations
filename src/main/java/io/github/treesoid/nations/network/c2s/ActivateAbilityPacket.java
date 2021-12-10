@@ -14,8 +14,6 @@ public class ActivateAbilityPacket {
     public static void registerReciver() {
         ServerPlayNetworking.registerGlobalReceiver(IDENTIFIER, (server, player, handler, buf, responseSender) -> server.execute(() -> {
             PlayerAbilityList abilityList = NationsServer.DATABASE_HANDLER.getOrCreatePlayerAbilityList(player.getUuid(), server);
-            if (!abilityList.hasAbilitySelected()) System.out.println("no ability selected");
-            else System.out.println("selected ability: " + abilityList.selectedAbility.ability.identifier);
             abilityList.useSelectedAbility();
         }));
     }

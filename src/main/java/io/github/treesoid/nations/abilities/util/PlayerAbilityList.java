@@ -5,23 +5,21 @@ import io.github.treesoid.nations.helper.ServerPlayerHelper;
 import io.github.treesoid.nations.server.NationsServer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 public class PlayerAbilityList {
     public final UUID player;
     public final List<PlayerAbility> abilities = new LinkedList<>();
     private final MinecraftServer server;
     public PlayerAbility selectedAbility = null;
-    public List<PlayerAbility> favourites = new ArrayList<>();
-    // In radians
-    public double abilityIntervalAngle = 0;
 
     public PlayerAbilityList(UUID player, MinecraftServer server) {
         this.server = server;
@@ -79,25 +77,20 @@ public class PlayerAbilityList {
                     NationsServer.DATABASE_HANDLER.updatePlayerAbility(ability1, player);
                     output.set(true);
                 });
-        this.updateFavourites();
         return output.get();
     }
 
     @SuppressWarnings("UnusedReturnValue")
     public boolean selectAbility(Ability ability) {
-        PlayerAbility prevSelected = selectedAbility;
         if (ability == null) {
             this.selectedAbility = null;
-            if (prevSelected != null) {
-                NationsServer.DATABASE_HANDLER.updatePlayerAbility(prevSelected, player);
-            }
+            NationsServer.DATABASE_HANDLER.setSelectedAbility(player, null);
             return true;
         }
         Optional<PlayerAbility> optionalPlayerAbility = abilities.stream().filter(ability::matches).findFirst();
         if (optionalPlayerAbility.isEmpty()) return false;
         this.selectedAbility = optionalPlayerAbility.get();
-        NationsServer.DATABASE_HANDLER.updatePlayerAbility(prevSelected, player);
-        NationsServer.DATABASE_HANDLER.updatePlayerAbility(selectedAbility, player);
+        NationsServer.DATABASE_HANDLER.setSelectedAbility(player, selectedAbility.ability);
         return true;
     }
 
@@ -110,13 +103,6 @@ public class PlayerAbilityList {
         if (hasAbilitySelected()) {
             selectedAbility.use();
         }
-    }
-
-    public void updateFavourites() {
-        favourites = abilities.stream()
-                .filter(PlayerAbility::isFavourite)
-                .collect(Collectors.toList());
-        abilityIntervalAngle = Math.toRadians(favourites.size() == 0 ? 360 : 360d / favourites.size());
     }
 
     public boolean isOnline() {

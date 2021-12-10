@@ -22,6 +22,7 @@ public abstract class Ability {
         ability.setCooldown(getMaxCooldown());
         if (canUse(ability)) {
             onTrigger(ability);
+            ability.setCooldown(getMaxCooldown());
         }
     }
 

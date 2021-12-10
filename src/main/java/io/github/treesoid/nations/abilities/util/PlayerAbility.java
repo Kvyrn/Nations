@@ -1,10 +1,7 @@
 package io.github.treesoid.nations.abilities.util;
 
-import io.github.treesoid.nations.Nations;
-import io.github.treesoid.nations.helper.ServerPlayerHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 public class PlayerAbility {

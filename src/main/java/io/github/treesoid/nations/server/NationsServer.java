@@ -21,7 +21,7 @@ public class NationsServer implements DedicatedServerModInitializer {
         NationsConfig.save();
 
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://" + NationsConfig.CONFIG.database.url, NationsConfig.CONFIG.database.username, NationsConfig.CONFIG.database.password);
+            Connection connection = DriverManager.getConnection("jdbc:mysql://" + NationsConfig.SERVER_CONFIG.database.url, NationsConfig.SERVER_CONFIG.database.username, NationsConfig.SERVER_CONFIG.database.password);
             DATABASE_HANDLER = new MySQLDatabaseHandler(connection);
         } catch (SQLException e) {
             FabricGuiEntry.displayCriticalError(e, true);

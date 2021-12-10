@@ -8,7 +8,6 @@ import io.github.treesoid.nations.helper.ServerPlayerHelper;
 import io.github.treesoid.nations.storage.OfflinePlayerData;
 import io.github.treesoid.nations.storage.OnlinePlayerData;
 import io.github.treesoid.nations.storage.PlayerData;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
 
@@ -35,6 +34,7 @@ public class MySQLDatabaseHandler implements IDatabaseHandler {
     private static final String removePlayerAbility = "DELETE FROM PlayerAbilities WHERE Uuid = ? AND AbilityId = ?;";
     private static final String getPlayerData = "SELECT * FROM Players WHERE Uuid = ?;";
     private static final String createPlayerData = "INSERT INTO Players VALUES (?, ?, ?, ?, ?, ?);";
+    private static final String setSelectedAbility = "UPDATE Players SET SelectedAbility = ? WHERE Uuid = ?;";
 
     private final Connection databaseConnection;
     private final HashMap<UUID, PlayerAbilityList> abilityListCache = new HashMap<>();
@@ -93,7 +93,10 @@ public class MySQLDatabaseHandler implements IDatabaseHandler {
 
         /*
         PlayerAbilities table
-        | Name                  | Data type     |
+        | Name                  | Data type     |public void registerNetworkRecivers() {
+        ActivateAbilityPacket.registerReciver();
+        SelectAbilityPacket.registerReciver();
+    }
         |-----------------------|---------------|
         | PlayerUuid **(fkey)** | CHAR(36)      |
         | AbilityId             | TINYTEXT      |
@@ -144,7 +147,6 @@ public class MySQLDatabaseHandler implements IDatabaseHandler {
             }
 
             if (cache) abilityListCache.put(uuid, object);
-            object.updateFavourites();
             return object;
         } catch (SQLException e) {
             LOGGER.warn("Failed to query abilities!", e);
@@ -176,7 +178,7 @@ public class MySQLDatabaseHandler implements IDatabaseHandler {
             statement.setLong(2, data.playtime);
             statement.setString(3, data.nation.toString());
             statement.setInt(4, data.resourcePoints);
-            statement.setString(5, data.selectedAbility.toString());
+            statement.setString(5, data.selectedAbility == null ? "nations:null" : data.selectedAbility.toString());
             // Specify target
             statement.setString(6, data.uuid.toString());
             return statement.executeUpdate();
@@ -263,6 +265,7 @@ public class MySQLDatabaseHandler implements IDatabaseHandler {
 
     @Override
     public int updatePlayerAbility(PlayerAbility ability, UUID uuid) {
+        if (ability == null) return 0;
         try {
             PreparedStatement statement = databaseConnection.prepareStatement(updateAbility);
             statement.setBoolean(1, ability.isFavourite());
@@ -320,6 +323,18 @@ public class MySQLDatabaseHandler implements IDatabaseHandler {
             LOGGER.warn("Failed to get selected ability!", e);
         }
         return null;
+    }
+
+    @Override
+    public void setSelectedAbility(UUID player, Ability ability) {
+        try {
+            PreparedStatement statement = databaseConnection.prepareStatement(setSelectedAbility);
+            statement.setString(1, ability == null ? "nations:null" : ability.identifier.toString());
+            statement.setString(2, player.toString());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.warn("Failed to set selected ability!", e);
+        }
     }
 
     @Override
