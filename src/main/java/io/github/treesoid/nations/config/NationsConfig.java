@@ -27,7 +27,6 @@ public class NationsConfig {
     }
 
     public static void save() {
-        System.out.println(SERVER_CONFIG);
         CommentedFileConfig configObject = OBJECT_CONVERTER.toConfig(SERVER_CONFIG, NationsConfig::createConfig);
         applyComments(configObject);
         configObject.save();
@@ -55,10 +54,7 @@ public class NationsConfig {
 
     private static void fixInternal(Config input, Config def) {
         Map<String, Object> map = def.valueMap();
-        System.out.println("Defconfig = " + map.keySet());
-        System.out.println("Config = " + input.valueMap().keySet());
         for (String entry : map.keySet()) {
-            System.out.println(map.get(entry));
             Object obj = map.get(entry);
             if (!input.contains(entry)) {
                 input.set(entry, obj);
