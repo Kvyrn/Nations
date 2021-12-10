@@ -25,7 +25,7 @@ public class PlayerAbility {
     }
 
     public boolean hasCooldown() {
-        return cooldown < 1;
+        return cooldown > 1;
     }
 
     public void tickCooldown() {

@@ -12,6 +12,8 @@
     "nations.commands.ability.revoke.success.multi": "Ability revoked from %s players",
     "nations.commands.ability.list": "Abilities of %s: %s",
 
+    "nations.commands.nations.reloaded": "Config reloaded!",
+
     "key.nations.activate_ability": "Activate ability",
     "category.nations": "Nations",
 

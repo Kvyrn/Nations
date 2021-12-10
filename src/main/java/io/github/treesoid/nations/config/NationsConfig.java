@@ -1,62 +1,71 @@
 package io.github.treesoid.nations.config;
 
+import com.electronwill.nightconfig.core.Config;
 import com.electronwill.nightconfig.core.conversion.ObjectConverter;
-import com.electronwill.nightconfig.core.file.FileConfig;
-import com.electronwill.nightconfig.core.io.IndentStyle;
-import com.electronwill.nightconfig.core.io.WritingMode;
-import com.electronwill.nightconfig.toml.TomlFormat;
-import com.electronwill.nightconfig.toml.TomlWriter;
-import io.github.treesoid.nations.Nations;
+import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Map;
 
 public class NationsConfig {
     public static NationsConfigObject SERVER_CONFIG;
     public static final ObjectConverter OBJECT_CONVERTER = new ObjectConverter();
-    public static final TomlWriter writer = TomlFormat.instance().createWriter();
-    static {
-        writer.setIndent(IndentStyle.SPACES_4);
-    }
 
     public static void load() {
         File file = configPath().toFile();
-        if (!file.exists()) {
-            try {
-                if (!file.getParentFile().exists()) {
-                    //noinspection ResultOfMethodCallIgnored
-                    file.getParentFile().mkdir();
-                }
-                //noinspection ResultOfMethodCallIgnored
-                file.createNewFile();
-                FileConfig defConfig = OBJECT_CONVERTER.toConfig(new NationsConfigObject(), NationsConfig::createConfig);
-                writer.write(defConfig, file, WritingMode.REPLACE);
-                defConfig.close();
-            } catch (IOException e) {
-                Nations.LOGGER.error("[Nations] Failed to create config file! (" + file.getAbsolutePath() + ")", e);
-            }
+        if (!file.getParentFile().exists()) {
+            //noinspection ResultOfMethodCallIgnored
+            file.getParentFile().mkdir();
         }
-        FileConfig configObject = createConfig();
+        CommentedFileConfig configObject = createConfig();
         configObject.load();
+        tryFixConfig(configObject);
         SERVER_CONFIG = OBJECT_CONVERTER.toObject(configObject, NationsConfigObject::new);
         configObject.close();
     }
 
     public static void save() {
-        FileConfig configObject = OBJECT_CONVERTER.toConfig(SERVER_CONFIG, NationsConfig::createConfig);
-        writer.write(configObject, configObject.getFile(), WritingMode.REPLACE);
+        System.out.println(SERVER_CONFIG);
+        CommentedFileConfig configObject = OBJECT_CONVERTER.toConfig(SERVER_CONFIG, NationsConfig::createConfig);
+        applyComments(configObject);
+        configObject.save();
         configObject.close();
     }
 
-    private static FileConfig createConfig() {
-        return FileConfig.builder(configPath())
+    private static CommentedFileConfig createConfig() {
+        return CommentedFileConfig.builder(configPath())
                 .preserveInsertionOrder()
                 .build();
     }
 
+    private static void applyComments(CommentedFileConfig config) {
+        config.setComment("abilities.fartJump.verticalVelocity", "Amount of vertical velocity the player recives when activating.");
+    }
+
     private static Path configPath() {
-        return FabricLoader.getInstance().getConfigDir().resolve("nations").resolve("server.toml");
+        return FabricLoader.getInstance().getConfigDir().resolve("nations").resolve("server.conf");
+    }
+
+    private static void tryFixConfig(CommentedFileConfig config) {
+        CommentedFileConfig defConfig = OBJECT_CONVERTER.toConfig(new NationsConfigObject(), NationsConfig::createConfig);
+        fixInternal(config, defConfig);
+    }
+
+    private static void fixInternal(Config input, Config def) {
+        Map<String, Object> map = def.valueMap();
+        System.out.println("Defconfig = " + map.keySet());
+        System.out.println("Config = " + input.valueMap().keySet());
+        for (String entry : map.keySet()) {
+            System.out.println(map.get(entry));
+            Object obj = map.get(entry);
+            if (!input.contains(entry)) {
+                input.set(entry, obj);
+            }
+            if (obj instanceof Config) {
+                fixInternal(input.get(entry), def.get(entry));
+            }
+        }
     }
 }

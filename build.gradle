@@ -44,8 +44,8 @@ dependencies {
     include "mysql:mysql-connector-java:${project.mysqlconnector}"
 
     // Night-config https://github.com/TheElectronWill/Night-Config
-    implementation "com.electronwill.night-config:toml:${project.nightconfig}"
-    include "com.electronwill.night-config:toml:${project.nightconfig}"
+    implementation "com.electronwill.night-config:hocon:${project.nightconfig}"
+    include "com.electronwill.night-config:hocon:${project.nightconfig}"
 }
 
 processResources {

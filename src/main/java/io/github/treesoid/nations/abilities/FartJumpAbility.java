@@ -3,8 +3,11 @@ package io.github.treesoid.nations.abilities;
 import io.github.treesoid.nations.Nations;
 import io.github.treesoid.nations.abilities.util.PlayerAbility;
 import io.github.treesoid.nations.abilities.util.Ability;
+import io.github.treesoid.nations.config.NationsConfig;
+import io.github.treesoid.nations.network.s2c.AddVelocityPacket;
 import io.github.treesoid.nations.server.NationsServer;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 
@@ -34,6 +37,6 @@ public class FartJumpAbility extends Ability {
     @Override
     public void onTrigger(PlayerAbility ability) {
         ability.holder.sendMessage(new LiteralText("pffffffff"), false);
-        ability.holder.addVelocity(0, 10, 0);
+        AddVelocityPacket.send((ServerPlayerEntity) ability.holder, 0, NationsConfig.SERVER_CONFIG.abilities.fartJump.verticalVelocity, 0);
     }
 }

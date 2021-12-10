@@ -1,5 +1,6 @@
 package io.github.treesoid.nations.client;
 
+import io.github.treesoid.nations.network.s2c.AddVelocityPacket;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -13,5 +14,6 @@ public class NationsClient implements ClientModInitializer {
     }
 
     private static void registerClientNetworkRecivers() {
+        AddVelocityPacket.registerReciver();
     }
 }

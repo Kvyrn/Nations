@@ -24,7 +24,7 @@ import static net.minecraft.server.command.CommandManager.literal;
 public class AbilityCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(
-                literal("ability")
+                literal("ability").requires(source -> source.hasPermissionLevel(2))
                         .then(argument("target", EntityArgumentType.players())
                                 .then(argument("ability", AbilityArgumentType.ability())
                                         .then(literal("grant").executes(AbilityCommand::grantAbility))

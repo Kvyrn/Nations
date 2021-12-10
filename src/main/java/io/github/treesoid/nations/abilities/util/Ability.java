@@ -19,11 +19,11 @@ public abstract class Ability {
     public abstract boolean canObtain(PlayerEntity  player);
 
     public void onUse(PlayerAbility ability) {
-        ability.setCooldown(getMaxCooldown());
         if (canUse(ability)) {
             onTrigger(ability);
             ability.setCooldown(getMaxCooldown());
         }
+        ability.setCooldown(getMaxCooldown());
     }
 
     public abstract int getMaxCooldown();
