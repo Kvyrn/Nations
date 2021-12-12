@@ -43,9 +43,8 @@ public class NationsKeybinds {
         while (SELECT_ABILITY.wasPressed()) {
             wasPressed = true;
         }
-        if (wasPressed) {
-            SelectAbilityPacket.send(FartJumpAbility.INSTANCE);
-            client.player.sendMessage(new LiteralText("ability selected"), false);
+        if (wasPressed && NationsClient.abilityList != null) {
+            NationsClient.abilityList.selectAbility(client);
         }
     }
 
@@ -54,8 +53,8 @@ public class NationsKeybinds {
         while (ACTIVATE_ABILITY.wasPressed()) {
             wasPressed = true;
         }
-        if (wasPressed) {
-            ActivateAbilityPacket.send();
+        if (wasPressed && NationsClient.abilityList != null) {
+            NationsClient.abilityList.activateAbility();
         }
     }
 }

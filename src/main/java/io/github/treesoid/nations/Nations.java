@@ -4,23 +4,14 @@ import io.github.treesoid.nations.abilities.FartJumpAbility;
 import io.github.treesoid.nations.abilities.util.Ability;
 import io.github.treesoid.nations.commands.AbilityCommand;
 import io.github.treesoid.nations.commands.argument.AbilityArgumentType;
-import io.github.treesoid.nations.config.NationsConfig;
-import io.github.treesoid.nations.database.IDatabaseHandler;
-import io.github.treesoid.nations.database.MySQLDatabaseHandler;
-import io.github.treesoid.nations.network.c2s.ActivateAbilityPacket;
-import io.github.treesoid.nations.network.c2s.SelectAbilityPacket;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
-import net.fabricmc.loader.impl.gui.FabricGuiEntry;
 import net.minecraft.command.argument.ArgumentTypes;
 import net.minecraft.command.argument.serialize.ConstantArgumentSerializer;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.HashMap;
 
 public class Nations implements ModInitializer {

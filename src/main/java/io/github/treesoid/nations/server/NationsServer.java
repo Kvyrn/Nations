@@ -1,6 +1,6 @@
 package io.github.treesoid.nations.server;
 
-import io.github.treesoid.nations.config.NationsConfig;
+import io.github.treesoid.nations.config.NationsServerConfig;
 import io.github.treesoid.nations.database.IDatabaseHandler;
 import io.github.treesoid.nations.database.MySQLDatabaseHandler;
 import io.github.treesoid.nations.network.c2s.ActivateAbilityPacket;
@@ -17,11 +17,11 @@ public class NationsServer implements DedicatedServerModInitializer {
 
     @Override
     public void onInitializeServer() {
-        NationsConfig.load();
-        NationsConfig.save();
+        NationsServerConfig.load();
+        NationsServerConfig.save();
 
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://" + NationsConfig.SERVER_CONFIG.database.url, NationsConfig.SERVER_CONFIG.database.username, NationsConfig.SERVER_CONFIG.database.password);
+            Connection connection = DriverManager.getConnection("jdbc:mysql://" + NationsServerConfig.CONFIG.database.url, NationsServerConfig.CONFIG.database.username, NationsServerConfig.CONFIG.database.password);
             DATABASE_HANDLER = new MySQLDatabaseHandler(connection);
         } catch (SQLException e) {
             FabricGuiEntry.displayCriticalError(e, true);

@@ -23,7 +23,6 @@ public abstract class Ability {
             onTrigger(ability);
             ability.setCooldown(getMaxCooldown());
         }
-        ability.setCooldown(getMaxCooldown());
     }
 
     public abstract int getMaxCooldown();

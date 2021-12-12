@@ -2,7 +2,7 @@ package io.github.treesoid.nations.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.treesoid.nations.config.NationsConfig;
+import io.github.treesoid.nations.config.NationsServerConfig;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.TranslatableText;
 
@@ -16,7 +16,7 @@ public class NatonsCommand {
     }
 
     private static int reloadConfig(CommandContext<ServerCommandSource> ctx) {
-        NationsConfig.load();
+        NationsServerConfig.load();
         ctx.getSource().sendFeedback(new TranslatableText("nations.commands.nations.reloaded"), true);
         return 1;
     }
