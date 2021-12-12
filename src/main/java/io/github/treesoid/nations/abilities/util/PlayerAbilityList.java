@@ -2,6 +2,7 @@ package io.github.treesoid.nations.abilities.util;
 
 import io.github.treesoid.nations.Nations;
 import io.github.treesoid.nations.helper.ServerPlayerHelper;
+import io.github.treesoid.nations.network.s2c.SyncAbilityListPacket;
 import io.github.treesoid.nations.server.NationsServer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -129,5 +130,8 @@ public class PlayerAbilityList {
     }
 
     public void sync() {
+        if (isOnline()) {
+            SyncAbilityListPacket.send(ServerPlayerHelper.getPlayer(player, server), serialize());
+        }
     }
 }
