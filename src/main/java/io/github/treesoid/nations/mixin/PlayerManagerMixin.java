@@ -1,6 +1,5 @@
 package io.github.treesoid.nations.mixin;
 
-import io.github.treesoid.nations.Nations;
 import io.github.treesoid.nations.server.NationsServer;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.MinecraftServer;
@@ -15,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerManager.class)
 public class PlayerManagerMixin {
-
     @Shadow @Final private MinecraftServer server;
 
     @Inject(method = "onPlayerConnect", at = @At("TAIL"))

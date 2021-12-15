@@ -33,6 +33,8 @@ public interface IDatabaseHandler {
 
     int updatePlayerData(PlayerData data);
 
+    int updateCachedPlayerData(UUID uuid);
+
     default PlayerData getOrCreatePlayerData(UUID uuid, MinecraftServer server) {
         return getOrCreatePlayerData(uuid, server, false, true);
     }

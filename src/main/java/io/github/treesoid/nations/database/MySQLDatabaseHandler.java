@@ -37,7 +37,7 @@ public class MySQLDatabaseHandler implements IDatabaseHandler {
     private static final String setSelectedAbility = "UPDATE Players SET SelectedAbility = ? WHERE Uuid = ?;";
 
     private final Connection databaseConnection;
-    private final HashMap<UUID, PlayerAbilityList> abilityListCache = new HashMap<>();
+    private final HashMap<UUID, PlayerAbiyplityList> abilityListCache = new HashMap<>();
     private final HashMap<UUID, PlayerData> playerDataCache = new HashMap<>();
 
     public MySQLDatabaseHandler(Connection conn) {
@@ -186,6 +186,11 @@ public class MySQLDatabaseHandler implements IDatabaseHandler {
             LOGGER.warn("Failed to update player data!", e);
         }
         return 0;
+    }
+
+    @Override
+    public int updateCachedPlayerData(UUID uuid) {
+        return updatePlayerData(playerDataCache.get(uuid));
     }
 
     @Override

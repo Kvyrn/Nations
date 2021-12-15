@@ -42,6 +42,10 @@ public abstract class PlayerData {
         this.resourcePoints = resourcePoints;
     }
 
+    public void addResourcePoints(int points) {
+        this.resourcePoints += points;
+    }
+
     public void setSelectedAbility(Ability selectedAbility) {
         this.selectedAbility = selectedAbility;
     }

@@ -8,9 +8,11 @@ import java.nio.file.Path;
 
 public class NationsServerConfig {
     public static NationsConfigObject CONFIG;
+    public static boolean loaded = false;
 
     public static void load() {
         CONFIG = ConfigHelper.load(configPath(), NationsConfigObject::new);
+        loaded = true;
     }
 
     public static void save() {
