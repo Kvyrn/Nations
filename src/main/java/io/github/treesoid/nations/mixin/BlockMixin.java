@@ -22,7 +22,7 @@ public class BlockMixin {
     private void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack stack, CallbackInfo ci) {
         if (EnchantmentHelper.getLevel(Enchantments.SILK_TOUCH, stack) == 0) {
             PlayerData data = NationsServer.DATABASE_HANDLER.getOrCreatePlayerData(player.getUuid(), player.getServer());
-            data.addResourcePoints(NationsServer.getResourcePointsForBlock(state.getBlock()));
+            data.addResourcePoints(NationsServer.getResourcePointsForBlock(state.getBlock(), EnchantmentHelper.getLevel(Enchantments.FORTUNE, stack)));
         }
     }
 }
