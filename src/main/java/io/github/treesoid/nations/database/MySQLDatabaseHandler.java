@@ -37,7 +37,7 @@ public class MySQLDatabaseHandler implements IDatabaseHandler {
     private static final String setSelectedAbility = "UPDATE Players SET SelectedAbility = ? WHERE Uuid = ?;";
 
     private final Connection databaseConnection;
-    private final HashMap<UUID, PlayerAbiyplityList> abilityListCache = new HashMap<>();
+    private final HashMap<UUID, PlayerAbilityList> abilityListCache = new HashMap<>();
     private final HashMap<UUID, PlayerData> playerDataCache = new HashMap<>();
 
     public MySQLDatabaseHandler(Connection conn) {
@@ -53,7 +53,7 @@ public class MySQLDatabaseHandler implements IDatabaseHandler {
         | Name *(key*)          | VARCHAR(255)  |
          */
         String createNationsTable = "CREATE TABLE IF NOT EXISTS Nations (" +
-                "Name VARCHAR(255)," +
+                "Identifier VARCHAR(255)," +
                 "PRIMARY KEY (Name)" +
                 ");";
         try {
@@ -190,6 +190,7 @@ public class MySQLDatabaseHandler implements IDatabaseHandler {
 
     @Override
     public int updateCachedPlayerData(UUID uuid) {
+        if (!playerDataCache.containsKey(uuid)) return 0;
         return updatePlayerData(playerDataCache.get(uuid));
     }
 

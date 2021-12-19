@@ -8,10 +8,10 @@ import net.minecraft.text.TranslatableText;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
-public class NatonsCommand {
+public class NationsCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(literal("nations").requires(source -> source.hasPermissionLevel(3))
-                .then(literal("reload").executes(NatonsCommand::reloadConfig))
+                .then(literal("reload").executes(NationsCommand::reloadConfig))
         );
     }
 

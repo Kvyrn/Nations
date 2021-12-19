@@ -1,5 +1,6 @@
 package io.github.treesoid.nations.client;
 
+import io.github.treesoid.nations.client.config.NationsClientConfig;
 import io.github.treesoid.nations.client.syncobjects.ClientPlayerAbilityList;
 import io.github.treesoid.nations.network.s2c.AddVelocityPacket;
 import io.github.treesoid.nations.network.s2c.SyncAbilityListPacket;
@@ -13,6 +14,9 @@ public class NationsClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        NationsClientConfig.load();
+        NationsClientConfig.save();
+
         NationsKeybinds.register();
         registerClientNetworkRecivers();
     }

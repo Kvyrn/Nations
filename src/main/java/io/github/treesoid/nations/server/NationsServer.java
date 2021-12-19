@@ -23,7 +23,7 @@ public class NationsServer implements DedicatedServerModInitializer {
 
     public static int getResourcePointsForBlock(Block block, int fortuneLevel) {
         int base = RESOURCE_POINTS.getOrDefault(block, 0);
-        return Math.round(switch (fortuneLevel) {
+        return (int) Math.round(switch (fortuneLevel) {
             case 1 -> base * CONFIG.resourcePoints.fortune1Multiplier;
             case 2 -> base * CONFIG.resourcePoints.fortune2Multiplier;
             case 3 -> base * CONFIG.resourcePoints.fortune3Multiplier;

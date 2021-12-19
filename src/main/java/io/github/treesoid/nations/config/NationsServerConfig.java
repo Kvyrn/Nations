@@ -21,6 +21,11 @@ public class NationsServerConfig {
 
     private static void applyComments(CommentedFileConfig config) {
         config.setComment("abilities.fartJump.verticalVelocity", "Amount of vertical velocity the player recives when activating.");
+        config.setComment("abilities.fartJump.verticalVelocityLarge", "Amount of vertical velocity the player recives when the fart is large.");
+        config.setComment("abilities.fartJump.verticalVelocityExplosive", "Amount of vertical velocity the player recives when the fart is explosive.");
+
+        config.setComment("abilities.fartJump.largeChance", "Chance for a large fart, 0=0%, 1=100%.");
+        config.setComment("abilities.fartJump.explosiveChance", "Chance for an explosive fart, 0=0%, 1=100%.");
     }
 
     private static Path configPath() {

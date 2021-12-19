@@ -20,9 +20,9 @@ PlayerAbilities
 
 Nations
 -------
-| Name         | Data type    |
-|--------------|--------------|
-| Name *(key*) | VARCHAR(255) |
+| Name               | Data type    |
+|--------------------|--------------|
+| Identifier *(key*) | VARCHAR(255) |
 
 __________________________________________
 **fkey** = *foreign key*

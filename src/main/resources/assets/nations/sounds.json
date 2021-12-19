@@ -1,0 +1,18 @@
+{
+  "fart": {
+    "subtitle": "subtitles.nations.fart",
+    "sounds": [
+      "nations:fart1",
+      "nations:fart2"
+    ]
+  },
+  "short_fart": {
+    "subtitle": "subtitles.nations.short_fart",
+    "sounds": [
+      "nations:fart_short1",
+      "nations:fart_short2",
+      "nations:fart_short3",
+      "nations:fart_short4"
+    ]
+  }
+}

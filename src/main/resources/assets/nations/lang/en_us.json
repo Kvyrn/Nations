@@ -17,5 +17,8 @@
     "key.nations.activate_ability": "Activate ability",
     "category.nations": "Nations",
 
-    "gui.nations.abilitySelector.title": "Ability selector"
+    "gui.nations.abilitySelector.title": "Ability selector",
+
+    "subtitles.nations.fart": "Fart",
+    "subtitles.nations.short_fart": "Short Fart"
 }

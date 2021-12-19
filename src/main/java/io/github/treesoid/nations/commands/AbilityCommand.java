@@ -3,7 +3,6 @@ package io.github.treesoid.nations.commands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import io.github.treesoid.nations.Nations;
 import io.github.treesoid.nations.abilities.util.Ability;
 import io.github.treesoid.nations.abilities.util.PlayerAbilityList;
 import io.github.treesoid.nations.commands.argument.AbilityArgumentType;

@@ -15,16 +15,21 @@ public class NationsConfigObject {
         public FartJumpConfig fartJump = new FartJumpConfig();
 
         public static class FartJumpConfig {
-            public double verticalVelocity = 2.0d;
+            public double verticalVelocity = 1.0d;
+            public double verticalVelocityLarge = 1.5d;
+            public double verticalVelocityExplosive = 4.0d;
+
+            public double largeChance = 0.1f;
+            public double explosiveChance = 0.02f;
         }
     }
 
     public ResourcePointsConfig resourcePoints = new ResourcePointsConfig();
 
     public static class ResourcePointsConfig {
-        public float fortune1Multiplier = 1.05f;
-        public float fortune2Multiplier = 1.1f;
-        public float fortune3Multiplier = 1.2f;
+        public double fortune1Multiplier = 1.05f;
+        public double fortune2Multiplier = 1.1f;
+        public double fortune3Multiplier = 1.2f;
 
         public int coalOre = 20;
         public int ironOre = 50;
@@ -32,7 +37,7 @@ public class NationsConfigObject {
         public int copperOre = 30;
         public int redstoneOre = 80;
         public int lapisOre = 80;
-        public int diamondOre = 140;
-        public int emeraldOre = 160;
+        public int diamondOre = 120;
+        public int emeraldOre = 130;
     }
 }

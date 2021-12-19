@@ -1,5 +1,6 @@
 package io.github.treesoid.nations.mixin;
 
+import io.github.treesoid.nations.Nations;
 import io.github.treesoid.nations.server.NationsServer;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -24,8 +25,12 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
     private void writeData(NbtCompound nbt, CallbackInfo ci) {
-        NationsServer.DATABASE_HANDLER.getOrCreatePlayerAbilityList(this.getUuid(), this.getServer()).updateAllAbilities();
-        NationsServer.DATABASE_HANDLER.updateCachedPlayerData(getUuid());
+        try {
+            NationsServer.DATABASE_HANDLER.getOrCreatePlayerAbilityList(this.getUuid(), this.getServer()).updateAllAbilities();
+            NationsServer.DATABASE_HANDLER.updateCachedPlayerData(getUuid());
+        } catch (Exception e) {
+            Nations.LOGGER.warn("[Nations] Failed to save player data!", e);
+        }
     }
 
     private PlayerEntity asPlayer() {
