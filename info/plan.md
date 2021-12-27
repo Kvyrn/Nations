@@ -26,6 +26,14 @@ Retain some items after death.
 
 A soulbound tool is retained after death.
 
+### Vodka vapour
+
+inflicts drunkness effect to nearby players. To obtain, a player must have drank vodka before.
+
+### Shield
+
+Spawns a shield.
+
 ## Items
 
 ### Vodka
