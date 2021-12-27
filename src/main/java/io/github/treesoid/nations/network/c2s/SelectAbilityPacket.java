@@ -19,6 +19,7 @@ public class SelectAbilityPacket {
             server.execute(() -> {
                 PlayerAbilityList abilityList = NationsServer.DATABASE_HANDLER.getOrCreatePlayerAbilityList(player.getUuid(), server);
                 abilityList.selectAbility(abilityIdentifier);
+                abilityList.sync();
             });
         });
     }

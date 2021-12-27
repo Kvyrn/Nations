@@ -86,12 +86,14 @@ public class PlayerAbilityList {
         if (ability == null) {
             this.selectedAbility = null;
             NationsServer.DATABASE_HANDLER.setSelectedAbility(player, null);
+            NationsServer.DATABASE_HANDLER.getOrCreatePlayerData(player, server).setSelectedAbility(null);
             return true;
         }
         Optional<PlayerAbility> optionalPlayerAbility = abilities.stream().filter(ability::matches).findFirst();
         if (optionalPlayerAbility.isEmpty()) return false;
         this.selectedAbility = optionalPlayerAbility.get();
         NationsServer.DATABASE_HANDLER.setSelectedAbility(player, selectedAbility.ability);
+        NationsServer.DATABASE_HANDLER.getOrCreatePlayerData(player, server).setSelectedAbility(selectedAbility.ability);
         return true;
     }
 
@@ -124,7 +126,7 @@ public class PlayerAbilityList {
         }
         compound.put("abilities", list);
         if (hasAbilitySelected()) {
-            compound.putString("selctedAbility", selectedAbility.ability.identifier.toString());
+            compound.putString("selectedAbility", selectedAbility.ability.identifier.toString());
         }
         return compound;
     }

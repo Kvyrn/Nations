@@ -1,7 +1,9 @@
 package io.github.treesoid.nations.client.syncobjects;
 
 import io.github.treesoid.nations.Nations;
+import io.github.treesoid.nations.abilities.DashAbility;
 import io.github.treesoid.nations.abilities.FartJumpAbility;
+import io.github.treesoid.nations.abilities.util.Ability;
 import io.github.treesoid.nations.abilities.util.PlayerAbility;
 import io.github.treesoid.nations.client.config.NationsClientConfig;
 import io.github.treesoid.nations.network.c2s.ActivateAbilityPacket;
@@ -41,34 +43,44 @@ public class ClientPlayerAbilityList {
         }
     }
 
+    //TODO: handle zero size favourites list
     public void selectAbility(MinecraftClient client) {
+        Ability ab;
         if (NationsClientConfig.CONFIG.cycleToSelect) {
             int selected = favourites.indexOf(selectedAbility);
             if (selected < 0 || selected >= favourites.size()) {
-                SelectAbilityPacket.send(favourites.get(0).ability);
+                ab = favourites.get(0).ability;
+                SelectAbilityPacket.send(ab);
             } else {
-                SelectAbilityPacket.send(favourites.get(selected + 1).ability);
+                ab = favourites.get(selected + 1).ability;
+                SelectAbilityPacket.send(ab);
             }
         } else {
-            SelectAbilityPacket.send(FartJumpAbility.INSTANCE);
+            //for debug, will use radial menu
+            ab = DashAbility.INSTANCE;
+            SelectAbilityPacket.send(ab);
         }
         if (client.player != null) {
-            client.player.sendMessage(new LiteralText("Ability selected"), false);
+            client.player.sendMessage(new LiteralText("Ability selected: " + ab.identifier), false);
         }
     }
 
     public static ClientPlayerAbilityList deserialize(NbtCompound compound, ClientPlayerEntity entity) {
         NbtList list = compound.getList("abilities", 10);
         List<PlayerAbility> playerAbilities = new LinkedList<>();
-        Identifier selectedAbilityid = new Identifier(compound.getString("selectedAbility"));
+        String selectedAbilityStr = compound.getString("selectedAbility");
+        boolean abilitySelected = !selectedAbilityStr.isEmpty();
+        Identifier selectedAbilityid = new Identifier(selectedAbilityStr);
         PlayerAbility selectedAbility = null;
         for (NbtElement element : list) {
             NbtCompound abilityCompound = (NbtCompound) element;
-            Identifier abilityId = new Identifier(abilityCompound.getString("ability"));
+            Identifier abilityId = new Identifier(abilityCompound.getString("id"));
             PlayerAbility ability = new PlayerAbility(entity, Nations.ABILITY_REGISTRY.get(abilityId));
             ability.setFavourite(abilityCompound.getBoolean("favourite"));
             ability.setCooldown(abilityCompound.getInt("cooldown"));
-            if (abilityId.equals(selectedAbilityid)) selectedAbility = ability;
+            if (abilitySelected && abilityId.equals(selectedAbilityid)) {
+                selectedAbility = ability;
+            }
             playerAbilities.add(ability);
         }
         ClientPlayerAbilityList object = new ClientPlayerAbilityList(entity, playerAbilities);

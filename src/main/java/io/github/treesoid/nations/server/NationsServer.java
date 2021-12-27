@@ -4,6 +4,7 @@ import io.github.treesoid.nations.config.NationsServerConfig;
 import io.github.treesoid.nations.database.IDatabaseHandler;
 import io.github.treesoid.nations.database.MySQLDatabaseHandler;
 import io.github.treesoid.nations.network.c2s.ActivateAbilityPacket;
+import io.github.treesoid.nations.network.c2s.RequestSyncAbilityListPacket;
 import io.github.treesoid.nations.network.c2s.SelectAbilityPacket;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.loader.impl.gui.FabricGuiEntry;
@@ -66,5 +67,6 @@ public class NationsServer implements DedicatedServerModInitializer {
     public void registerNetworkRecivers() {
         ActivateAbilityPacket.registerReciver();
         SelectAbilityPacket.registerReciver();
+        RequestSyncAbilityListPacket.registerReciver();
     }
 }

@@ -22,6 +22,13 @@ public class NationsConfigObject {
             public double largeChance = 0.1f;
             public double explosiveChance = 0.02f;
         }
+
+        public DashConfig dash = new DashConfig();
+
+        public static class DashConfig {
+            public double factor = 2.0d;
+            public double verticalFactor = 0.5d;
+        }
     }
 
     public ResourcePointsConfig resourcePoints = new ResourcePointsConfig();

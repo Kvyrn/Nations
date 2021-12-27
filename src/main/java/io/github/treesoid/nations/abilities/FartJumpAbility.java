@@ -2,14 +2,12 @@ package io.github.treesoid.nations.abilities;
 
 import io.github.treesoid.nations.Nations;
 import io.github.treesoid.nations.NationsSounds;
-import io.github.treesoid.nations.abilities.util.PlayerAbility;
 import io.github.treesoid.nations.abilities.util.Ability;
+import io.github.treesoid.nations.abilities.util.PlayerAbility;
 import io.github.treesoid.nations.config.NationsServerConfig;
 import io.github.treesoid.nations.network.s2c.AddVelocityPacket;
 import io.github.treesoid.nations.server.NationsServer;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -19,6 +17,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
@@ -47,13 +46,12 @@ public class FartJumpAbility extends Ability {
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    public void onTrigger(PlayerAbility ability) {
+    public void onTrigger(@NotNull PlayerAbility ability) {
         Type type = getType(ability.holder.getRandom());
-        ability.holder.sendMessage(new LiteralText("pffffffff " + type.name()), false);
         Vec3d pos = ability.holder.getPos();
         ability.holder.world.playSound(null, pos.x, pos.y, pos.z, type.sound, SoundCategory.PLAYERS, 2f, ability.holder.getRandom().nextFloat(0.5f, 1.5f));
         if (type == Type.EXPLOSIVE && !ability.holder.world.isClient) {
-            ((ServerWorld)(ability.holder.world)).spawnParticles(ParticleTypes.EXPLOSION_EMITTER, pos.x, pos.y, pos.z, 1, 1, 0, 0, 1);
+            ((ServerWorld) (ability.holder.world)).spawnParticles(ParticleTypes.EXPLOSION_EMITTER, pos.x, pos.y, pos.z, 1, 1, 0, 0, 1);
             ability.holder.world.playSound(null, pos.x, pos.y, pos.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 0.5f, ability.holder.getRandom().nextFloat(0.5f, 1.5f));
         }
         AddVelocityPacket.send((ServerPlayerEntity) ability.holder, 0, velocityForType(type), 0);

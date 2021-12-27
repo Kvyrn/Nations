@@ -178,7 +178,7 @@ public class MySQLDatabaseHandler implements IDatabaseHandler {
             statement.setLong(2, data.playtime);
             statement.setString(3, data.nation.toString());
             statement.setInt(4, data.resourcePoints);
-            statement.setString(5, data.selectedAbility == null ? "nations:null" : data.selectedAbility.toString());
+            statement.setString(5, data.selectedAbility == null ? "nations:null" : data.selectedAbility.identifier.toString());
             // Specify target
             statement.setString(6, data.uuid.toString());
             return statement.executeUpdate();
@@ -239,7 +239,7 @@ public class MySQLDatabaseHandler implements IDatabaseHandler {
                     playerData = new OfflinePlayerData(uuid, name);
                 }
                 playerData.setPlaytime(0);
-                playerData.setNation(new Identifier("nations", "default"));
+                playerData.setNation(new Identifier(Nations.modid, "default"));
                 playerData.setResourcePoints(0);
                 playerData.setSelectedAbility(null);
                 if (cache) playerDataCache.put(uuid, playerData);

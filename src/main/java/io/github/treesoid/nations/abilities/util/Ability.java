@@ -4,6 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,6 +20,7 @@ public abstract class Ability {
     public abstract boolean canObtain(PlayerEntity  player);
 
     public void onUse(PlayerAbility ability) {
+        System.out.println("ability " + identifier + " used, cooldown: " + ability.getCooldown());
         if (canUse(ability)) {
             onTrigger(ability);
             ability.setCooldown(getMaxCooldown());
@@ -42,5 +44,5 @@ public abstract class Ability {
         return identifier.equals(ability.ability.identifier);
     }
 
-    protected abstract void onTrigger(PlayerAbility ability);
+    protected abstract void onTrigger(@NotNull PlayerAbility ability);
 }

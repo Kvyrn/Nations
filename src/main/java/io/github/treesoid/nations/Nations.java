@@ -1,5 +1,6 @@
 package io.github.treesoid.nations;
 
+import io.github.treesoid.nations.abilities.DashAbility;
 import io.github.treesoid.nations.abilities.FartJumpAbility;
 import io.github.treesoid.nations.abilities.util.Ability;
 import io.github.treesoid.nations.commands.AbilityCommand;
@@ -29,6 +30,7 @@ public class Nations implements ModInitializer {
         });
 
         ABILITY_REGISTRY.put(FartJumpAbility.IDENTIFIER, FartJumpAbility.INSTANCE);
+        ABILITY_REGISTRY.put(DashAbility.IDENTIFIER, DashAbility.INSTANCE);
 
         NationsSounds.register();
 

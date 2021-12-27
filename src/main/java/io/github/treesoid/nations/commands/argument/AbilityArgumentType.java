@@ -17,8 +17,7 @@ import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
 public class AbilityArgumentType implements ArgumentType<Ability> {
-    @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
-    private static final Collection<String> EXAMPLES = Arrays.asList("nations:fart_jump");
+    private static final Collection<String> EXAMPLES = Arrays.asList("nations:fart_jump", "nations:dash");
     private static final DynamicCommandExceptionType INVALID_ABILITY = new DynamicCommandExceptionType(o -> new TranslatableText("nations.commands.ability.invalid", o));
 
     private AbilityArgumentType() {

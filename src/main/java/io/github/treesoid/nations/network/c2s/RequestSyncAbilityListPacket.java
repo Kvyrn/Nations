@@ -9,7 +9,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;
 
 public class RequestSyncAbilityListPacket {
-    public static Identifier IDENTIFIER = new Identifier(Nations.modid, "activate_ability");
+    public static Identifier IDENTIFIER = new Identifier(Nations.modid, "request_ability_list");
 
     public static void send() {
         ClientPlayNetworking.send(IDENTIFIER, PacketByteBufs.empty());
